@@ -232,9 +232,9 @@ def FPS_random(pts, K, seq_id, frame_id, class_id):
     farthest_pts_idx = np.zeros(K)
     upper_bound = pts.shape[0] - 1
     if upper_bound==0:
-        print "ZERO seq %d frame %d class %d " % (seq_id, frame_id, class_id)
+        print("ZERO seq %d frame %d class %d " % (seq_id, frame_id, class_id))
     if pts.shape[0] < K:
-        print "seq %d frame %d class %d segmentpont %d" % (seq_id, frame_id, class_id, pts.shape[0])
+        print("seq %d frame %d class %d segmentpont %d" % (seq_id, frame_id, class_id, pts.shape[0]))
     sys.stdout.flush()
     first_idx = random.randint(0, upper_bound)
     farthest_pts[0] = pts[first_idx]
@@ -400,7 +400,7 @@ def setup_graph(general_opts, train_opts, hyperparameters):
                 next_element = iterator.get_next()
                 next_element = reshape_element(next_element, batch_size=BATCH_SIZE, num_point=NUM_POINT)
                 time_elapsed_seg = datetime.now() - start_time_seg
-                print 'seg time elapsed (hh:mm:ss) {}'.format(time_elapsed_seg)
+                print('seg time elapsed (hh:mm:ss) {}'.format(time_elapsed_seg))
 
         with tf.device('/gpu:' + str(GPU_INDEX)):
 
@@ -497,7 +497,7 @@ def setup_graph(general_opts, train_opts, hyperparameters):
         # Restore variables from disk.
         trained_model = general_opts['trained_model']
         saver.restore(sess, trained_model)
-        print "Model restored."
+        print("Model restored.")
 
         ops = {'is_training_pl': is_training_pl,
                'is_training_pl_encoder': is_training_pl_encoder,
@@ -559,13 +559,13 @@ def eval_graph(sess, ops, validation_handle, batch_size):
                           ],
                          feed_dict=feed_dict)
 
-            print "class %d, sequence %d, frame %d" % (class_id, seq_id, frame_id)
+            print("class %d, sequence %d, frame %d" % (class_id, seq_id, frame_id))
 
             total_seen += batch_size
             total_axag_loss += axag_loss_val
             total_trans_loss += trans_loss_val
 
-            print 'Validation batch %d seq_id %d frame_id %d trans_loss %f rot_loss %f' % (batch_idx, seq_id, frame_id, trans_loss_val, axag_loss_val)
+            print('Validation batch %d seq_id %d frame_id %d trans_loss %f rot_loss %f' % (batch_idx, seq_id, frame_id, trans_loss_val, axag_loss_val))
             batch_idx = batch_idx + 1
 
             if b_visual:
@@ -650,10 +650,10 @@ def eval_graph(sess, ops, validation_handle, batch_size):
     avg_trans_loss = total_trans_loss / float(batch_idx)
 
     time_elapsed = datetime.now() - start_time_eval
-    print "eval time elapsed (hh:mm:ss.ms) {}".format(time_elapsed)
-    print "batch size %d" % batch_idx
-    print "trans_loss %f axag_loss %f" \
-          % (avg_trans_loss, avg_axag_loss)
+    print("eval time elapsed (hh:mm:ss.ms) {}".format(time_elapsed))
+    print("batch size %d" % batch_idx)
+    print("trans_loss %f axag_loss %f" \
+          % (avg_trans_loss, avg_axag_loss))
 
     return obj_batch[batch_sample_idx, :, :], class_id[batch_sample_idx]
 
